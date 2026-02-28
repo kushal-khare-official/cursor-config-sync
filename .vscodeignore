@@ -1,0 +1,13 @@
+# Source & build inputs (not needed in the packaged extension)
+src/**
+test/**
+tsconfig.json
+**/*.ts
+**/*.map
+
+# Dev tooling & config
+.vscode/**
+.claude/**
+node_modules/**
+
+# Keep: dist/, README.md, CHANGELOG.md, LICENSE, package.json, images/

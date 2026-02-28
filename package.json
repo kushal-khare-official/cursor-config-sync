@@ -1,0 +1,117 @@
+{
+  "name": "cursor-config-sync",
+  "displayName": "Cursor Config Sync",
+  "description": "Sync Cursor IDE configuration (rules, commands, skills, hooks, MCP) from a self-hosted Git repository based on user roles",
+  "version": "0.1.0",
+  "publisher": "KushalCodes",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kushal-khare-official/cursor-config-sync"
+  },
+  "homepage": "https://github.com/kushal-khare-official/cursor-config-sync#readme",
+  "bugs": {
+    "url": "https://github.com/kushal-khare-official/cursor-config-sync/issues"
+  },
+  "keywords": [
+    "cursor",
+    "cursor-ide",
+    "config",
+    "sync",
+    "roles",
+    "gitlab",
+    "github",
+    "rules",
+    "mcp",
+    "team"
+  ],
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1e1e2e",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "cursorConfigSync.setup",
+        "title": "Cursor Config Sync: Setup"
+      },
+      {
+        "command": "cursorConfigSync.sync",
+        "title": "Cursor Config Sync: Sync Now"
+      },
+      {
+        "command": "cursorConfigSync.preview",
+        "title": "Cursor Config Sync: Preview Changes"
+      },
+      {
+        "command": "cursorConfigSync.showLog",
+        "title": "Cursor Config Sync: Show Log"
+      }
+    ],
+    "configuration": {
+      "title": "Cursor Config Sync",
+      "properties": {
+        "cursorConfigSync.platform": {
+          "type": "string",
+          "enum": [
+            "github",
+            "gitlab"
+          ],
+          "default": "gitlab",
+          "description": "Git hosting platform"
+        },
+        "cursorConfigSync.instanceUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Base URL of self-hosted instance (e.g. https://gitlab.mycompany.com)"
+        },
+        "cursorConfigSync.repoPath": {
+          "type": "string",
+          "default": "",
+          "description": "Repository path (e.g. org/cursor-configs)"
+        },
+        "cursorConfigSync.branch": {
+          "type": "string",
+          "default": "main",
+          "description": "Branch to sync from"
+        },
+        "cursorConfigSync.username": {
+          "type": "string",
+          "default": "",
+          "description": "Your username or email for role lookup in assignments.json"
+        },
+        "cursorConfigSync.autoSyncOnOpen": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically sync config when a workspace is opened"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --target=node18",
+    "watch": "npm run compile -- --watch",
+    "package": "npm run compile && vsce package",
+    "publish": "npm run compile && vsce publish",
+    "publish:ovsx": "npm run compile && ovsx publish",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.3.0"
+  }
+}
