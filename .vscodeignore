@@ -8,6 +8,7 @@ tsconfig.json
 # Dev tooling & config
 .vscode/**
 .claude/**
+.gitignore
 node_modules/**
 
 # Keep: dist/, README.md, CHANGELOG.md, LICENSE, package.json, images/
