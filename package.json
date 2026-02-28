@@ -104,7 +104,7 @@
     "watch": "npm run compile -- --watch",
     "package": "npm run compile && vsce package",
     "publish": "npm run compile && vsce publish",
-    "publish:ovsx": "npm run compile && ovsx publish",
+    "publish:ovsx": "npm run package && ovsx publish cursor-config-sync-$(node -p \"require('./package.json').version\").vsix",
     "lint": "tsc --noEmit"
   },
   "devDependencies": {
@@ -112,6 +112,7 @@
     "@types/vscode": "^1.85.0",
     "@vscode/vsce": "^3.0.0",
     "esbuild": "^0.20.0",
+    "ovsx": "^0.10.9",
     "typescript": "^5.3.0"
   }
 }
