@@ -112,17 +112,21 @@ export class ConfigSyncer {
   ): Promise<void> {
     for (const configType of ['rules', 'commands', 'skills'] as const) {
       try {
+        const dirPrefix = `${rolePath}/${configType}/`;
         const files = await provider.getDirectoryContents(`${rolePath}/${configType}`);
         for (const file of files) {
-          const basename = file.path.split('/').pop()!;
-          const existing = merged[configType].findIndex(
-            f => f.path.split('/').pop() === basename,
-          );
+          // For skills, preserve subfolder structure (e.g. "my-skill/SKILL.MD")
+          // For rules/commands, use just the basename (flat)
+          const relativePath = configType === 'skills' && file.path.startsWith(dirPrefix)
+            ? file.path.slice(dirPrefix.length)
+            : file.path.split('/').pop()!;
+
+          const existing = merged[configType].findIndex(f => f.path === relativePath);
           if (existing >= 0) {
-            merged[configType][existing] = { path: basename, content: file.content };
-            this.logger.info(`Overriding ${configType}/${basename} from ${rolePath}`);
+            merged[configType][existing] = { path: relativePath, content: file.content };
+            this.logger.info(`Overriding ${configType}/${relativePath} from ${rolePath}`);
           } else {
-            merged[configType].push({ path: basename, content: file.content });
+            merged[configType].push({ path: relativePath, content: file.content });
           }
         }
       } catch {

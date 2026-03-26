@@ -29,10 +29,10 @@ export class DiffService {
 
         for (const configType of ['rules', 'commands', 'skills'] as const) {
           for (const remoteFile of merged[configType]) {
-            const basename = remoteFile.path.split('/').pop()!;
-            const localPath = path.join(workspaceRoot, '.cursor', configType, basename);
+            const relativePath = remoteFile.path;
+            const localPath = path.join(workspaceRoot, '.cursor', configType, relativePath);
             await this.comparePaths(
-              `.cursor/${configType}/${basename}`,
+              `.cursor/${configType}/${relativePath}`,
               localPath,
               remoteFile.content,
               diffs,

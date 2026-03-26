@@ -77,14 +77,15 @@ export class ConfigWriter {
   }
 
   private async writeFile(subdir: string, file: RemoteFile, result: SyncResult): Promise<void> {
-    const basename = file.path.split('/').pop()!;
-    const targetPath = path.join(this.cursorDir, subdir, basename);
+    const relativePath = file.path;
+    const targetPath = path.join(this.cursorDir, subdir, relativePath);
     try {
+      await this.ensureDir(path.dirname(targetPath));
       await fs.writeFile(targetPath, file.content, 'utf-8');
-      result.filesWritten.push(`.cursor/${subdir}/${basename}`);
+      result.filesWritten.push(`.cursor/${subdir}/${relativePath}`);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      result.errors.push({ file: `.cursor/${subdir}/${basename}`, message: msg });
+      result.errors.push({ file: `.cursor/${subdir}/${relativePath}`, message: msg });
     }
   }
 
