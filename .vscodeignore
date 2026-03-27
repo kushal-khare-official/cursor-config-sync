@@ -6,6 +6,7 @@ tsconfig.json
 **/*.map
 
 # Dev tooling & config
+.github/**
 .vscode/**
 .claude/**
 .gitignore
